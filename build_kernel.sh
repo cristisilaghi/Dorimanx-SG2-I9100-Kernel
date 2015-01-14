@@ -45,7 +45,7 @@ chmod -R 777 /tmp;
 # gcc x.x.x
 # export CROSS_COMPILE=$PARENT_DIR/toolchain/bin/arm-none-eabi-;
 
-# gcc 4.8.3 (Linaro 2013.x)
+# gcc 4.9.3 (Linaro 2014.12)
 export CROSS_COMPILE=$KERNELDIR/android-toolchain/bin/arm-eabi-;
 
 # importing PATCH for GCC depend on GCC version
@@ -78,6 +78,9 @@ elif [ "a$GCCVERSION" == "a0407" ]; then
 elif [ "a$GCCVERSION" == "a0408" ]; then
 	cp $KERNELDIR/arch/arm/boot/compressed/Makefile_linaro $KERNELDIR/arch/arm/boot/compressed/Makefile;
 	echo "GCC 4.8.X Compiler Detected, building";
+elif [ "a$GCCVERSION" == "a0409" ]; then
+	cp $KERNELDIR/arch/arm/boot/compressed/Makefile_linaro $KERNELDIR/arch/arm/boot/compressed/Makefile;
+	echo "GCC 4.9.X Compiler Detected, building";
 else
 	echo "Compiler not recognized! please fix the 'build_kernel.sh'-script to match your compiler.";
 	exit 0;
