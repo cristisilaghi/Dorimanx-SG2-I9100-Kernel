@@ -5609,14 +5609,7 @@ wl_cfg80211_mgmt_tx(struct wiphy *wiphy, bcm_struct_cfgdev *cfgdev,
 	struct ieee80211_channel *channel, bool offchan,
 	enum nl80211_channel_type channel_type,
 	bool channel_type_valid, unsigned int wait,
-	const u8* buf, size_t len,
-#if 1 //LINUX_VERSION_CODE >= KERNEL_VERSION(3, 2, 0) || defined(WL_COMPAT_WIRELESS)
-	bool no_cck,
-#endif
-#if 1 //LINUX_VERSION_CODE >= KERNEL_VERSION(3, 3, 0) || defined(WL_COMPAT_WIRELESS)
-	bool dont_wait_for_ack,
-#endif
-	u64 *cookie)
+	const u8* buf, size_t len, u64 *cookie)
 #endif /* WL_CFG80211_P2P_DEV_IF */
 {
 	wl_action_frame_t *action_frame;
@@ -6541,8 +6534,8 @@ static s32 wl_cfg80211_hostapd_sec(
 	return 0;
 }
 
-#if defined(WL_SUPPORT_BACKPORTED_KPATCHES) || (LINUX_VERSION_CODE >= KERNEL_VERSION(3, \
-	2, 0))
+/*defined(WL_SUPPORT_BACKPORTED_KPATCHES) || (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))*/
+#if 1 
 static s32
 wl_cfg80211_del_station(
 	struct wiphy *wiphy,
