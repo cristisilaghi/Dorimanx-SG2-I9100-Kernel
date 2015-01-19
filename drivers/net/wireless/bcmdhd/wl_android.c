@@ -2517,14 +2517,8 @@ static int wl_netlink_init(void)
 		return BCME_ERROR;
 	}
 
-#if 0 //LINUX_VERSION_CODE < KERNEL_VERSION(3, 6, 0)
 	nl_sk = netlink_kernel_create(&init_net, NETLINK_OXYGEN,
 		0, wl_netlink_recv, NULL, THIS_MODULE);
-#elif 0 //LINUX_VERSION_CODE < KERNEL_VERSION(3, 7, 0)
-	nl_sk = netlink_kernel_create(&init_net, NETLINK_OXYGEN, THIS_MODULE, &cfg);
-#else
-	nl_sk = netlink_kernel_create(&init_net, NETLINK_OXYGEN, &cfg);
-#endif
 
 	if (nl_sk == NULL) {
 		WL_ERR(("nl_sk is not ready\n"));
@@ -3676,12 +3670,8 @@ wl_genl_handle_msg(
 		return -EINVAL;
 	} else {
 		/* Handle the data */
-#if 0 //LINUX_VERSION_CODE < KERNEL_VERSION(3, 7, 0)) || defined(WL_COMPAT_WIRELESS)
-		WL_DBG(("%s: Data received from pid (%d) \n", __func__,
-			info->snd_pid));
-#endif /* (LINUX_VERSION < VERSION(3, 7, 0) || WL_COMPAT_WIRELESS */
+		WL_DBG(("Data received from pid (%d) \n", info->snd_pid));
 	}
-
 	return 0;
 }
 #endif /* WL_GENL */

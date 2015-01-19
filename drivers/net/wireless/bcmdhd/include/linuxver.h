@@ -41,10 +41,6 @@
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 0)) */
 #include <linux/module.h>
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 1, 0))
-#include <linux/kconfig.h>
-#endif
-
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 3, 0))
 /* __NO_VERSION__ must be defined for all linkables except one in 2.2 */
 #ifdef __UNDEF_NO_VERSION__
@@ -118,7 +114,7 @@
 	cpu_raise_softirq(smp_processor_id(), NET_RX_SOFTIRQ)
 #define DAEMONIZE(a) daemonize(); \
 	do { if (a) \
-		strncpy(current->comm, a, MIN(sizeof(current->comm), (strlen(a)))); \
+		strncpy(current->comm, a, MIN(sizeof(current->comm), (strlen(a) + 1))); \
 	} while (0);
 #endif /* LINUX_VERSION_CODE  */
 
@@ -164,10 +160,6 @@ typedef irqreturn_t(*FN_ISR) (int irq, void *dev_id, struct pt_regs *ptregs);
 #include <linux/sched.h>
 #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 32) */
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 9, 0))
-#include <linux/sched/rt.h>
-#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3, 9, 0) */
-
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29)
 #include <net/lib80211.h>
 #endif
@@ -187,18 +179,13 @@ typedef irqreturn_t(*FN_ISR) (int irq, void *dev_id, struct pt_regs *ptregs);
 #define __devexit
 #endif
 #ifndef __devinit
-#  if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 8, 0))
-#    define __devinit	__init
-#  else
-/* All devices are hotpluggable since linux 3.8.0 */
-#    define __devinit
-#  endif
-#endif /* !__devinit */
+#define __devinit	__init
+#endif
 #ifndef __devinitdata
 #define __devinitdata
 #endif
 #ifndef __devexit_p
-#define __devexit_p(x)	x
+#define __devexit_p(x) x
 #endif
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 4, 0))
@@ -717,18 +704,6 @@ not match our unaligned address for < 2.6.24
 #endif
 
 #define KMALLOC_FLAG (CAN_SLEEP() ? GFP_KERNEL: GFP_ATOMIC)
-
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0))
-#define RANDOM32	prandom_u32
-#else
-#define RANDOM32	random32
-#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0) */
-
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0))
-#define SRANDOM32(entropy)	prandom_seed(entropy)
-#else
-#define SRANDOM32(entropy)	srandom32(entropy)
-#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0) */
 
 /*
  * Overide latest kfifo functions with
